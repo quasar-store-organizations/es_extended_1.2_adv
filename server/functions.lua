@@ -241,36 +241,19 @@ end
 
 ESX.RegisterUsableItem = function(item, cb)
 	ESX.UsableItemsCallbacks[item] = cb
+	exports['qs-advancedinventory']:CreateUsableItem(item, cb)
 end
 
-ESX.UseItem = function(source, item)
-	ESX.UsableItemsCallbacks[item](source, item)
+exports('GetUsableItems', function()
+	return ESX.UsableItemsCallbacks
+end)
+
+ESX.UseItem = function(source, item, ...)
+	return exports['qs-advancedinventory']:UseItem(item, source, ...)
 end
 
 ESX.GetItemLabel = function(item)
-	if ESX.Items[item] then
-		return ESX.Items[item].label
-	end
-end
-
-ESX.CreatePickup = function(type, name, count, label, playerId, components, tintIndex)
-	local pickupId = (ESX.PickupId == 65635 and 0 or ESX.PickupId + 1)
-	local xPlayer = ESX.GetPlayerFromId(playerId)
-	local coords = xPlayer.getCoords()
-
-	ESX.Pickups[pickupId] = {
-		type = type, name = name,
-		count = count, label = label,
-		coords = coords
-	}
-
-	if type == 'item_weapon' then
-		ESX.Pickups[pickupId].components = components
-		ESX.Pickups[pickupId].tintIndex = tintIndex
-	end
-
-	TriggerClientEvent('esx:createPickup', -1, pickupId, label, coords, type, name, components, tintIndex)
-	ESX.PickupId = pickupId
+	return exports['qs-advancedinventory']:GetItemLabel(item)
 end
 
 ESX.DoesJobExist = function(job, grade)

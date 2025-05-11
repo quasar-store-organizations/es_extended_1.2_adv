@@ -19,16 +19,7 @@ function getSharedObject()
 end
 
 MySQL.ready(function()
-	MySQL.Async.fetchAll('SELECT * FROM items', {}, function(result)
-		for k,v in ipairs(result) do
-			ESX.Items[v.name] = {
-				label = v.label,
-				weight = v.weight,
-				rare = v.rare,
-				canRemove = v.can_remove
-			}
-		end
-	end)
+	ESX.Items = exports['qs-advancedinventory']:GetItemList()
 
 	MySQL.Async.fetchAll('SELECT * FROM jobs', {}, function(jobs)
 		for k,v in ipairs(jobs) do
@@ -53,6 +44,9 @@ MySQL.ready(function()
 			end
 		end)
 	end)
+
+	ESX.StartDBSync()
+	ESX.StartPayCheck()
 
 	print('[es_extended] [^2INFO^7] ESX developed by ESX-Org has been initialized')
 end)

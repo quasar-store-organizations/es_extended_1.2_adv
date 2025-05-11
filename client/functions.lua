@@ -37,7 +37,8 @@ ESX.IsPlayerLoaded = function()
 end
 
 ESX.GetPlayerData = function()
-	return ESX.PlayerData
+    ESX.PlayerData.inventory = exports['qs-advancedinventory']:getUserInventory()
+    return ESX.PlayerData
 end
 
 ESX.SetPlayerData = function(key, val)
